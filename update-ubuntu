@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Prompt for root password
+read -s -p "Enter root password: " ROOT_PASSWORD
+
+# Update package lists
+echo $ROOT_PASSWORD | sudo -S apt update
+
+
+# Upgrade installed packages
+echo $ROOT_PASSWORD | sudo -S apt upgrade -y
+
+
+# Refresh snaps
+echo $ROOT_PASSWORD | sudo -S snap refresh
+
