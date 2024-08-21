@@ -1,16 +1,80 @@
 #!/bin/bash
 
-# Prompt for root password
-read -s -p "Enter root password: " ROOT_PASSWORD
+# Help function
+usage() {
+    echo "Usage: $0 [-d -c -r -v -h]" 1>&2
+    echo "[options] are:
+        -d: run the dist-upgrade command.
+        -a: run the autoremove command.
+        -c: run the autoclean command.
+        -h: show this help message.
+        -v: show the verbose version." 1>&2
+    exit 1
+}
+
+VERBOSE=""
+
+# Process options with getopts
+while getopts ":drcvh" opt; do
+    case ${opt} in
+        d)
+            DIST_UPGRADE=true
+            ;;
+        r)
+            AUTOREMOVE=true
+            ;;
+        c)
+            AUTOCLEAN=true
+            ;;
+        v)
+            VERBOSE=true
+            ;;
+        h)
+            usage
+            exit 0
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            usage
+            exit 0
+            ;;
+    esac
+done
+
+# Shift para remover as opções processadas da lista de argumentos
+shift $((OPTIND -1))
+
+# Definir o modo verbose ou silencioso
+if [ "$VERBOSE" ]; then
+    APT_FLAGS=""
+else
+    APT_FLAGS="-qq"
+fi
 
 # Update package lists
-echo $ROOT_PASSWORD | sudo -S apt update
-
+sudo apt update $APT_FLAGS
 
 # Upgrade installed packages
-echo $ROOT_PASSWORD | sudo -S apt upgrade -y
-
+sudo apt upgrade -y $APT_FLAGS
 
 # Refresh snaps
-echo $ROOT_PASSWORD | sudo -S snap refresh
+sudo snap refresh
+if [ "$VERBOSE" ]; then
+    sudo snap changes
+fi
 
+# Run optional commands
+if [ "$DIST_UPGRADE" ]; then
+    sudo apt dist-upgrade -y $APT_FLAGS
+fi
+
+if [ "$AUTOREMOVE" ]; then
+    sudo apt autoremove -y $APT_FLAGS
+fi
+
+if [ "$AUTOCLEAN" ]; then
+    sudo apt autoclean $APT_FLAGS
+fi
+
+# Exit the script
+exit 0
