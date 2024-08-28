@@ -40,7 +40,7 @@ cd update-ubuntu
 Make the script executable and move it to the bin directory:
 ```bash
 chmod +x update-ubuntu.sh
-mv update-ubuntu /usr/local/bin/update-ubuntu
+sudo cp update-ubuntu /usr/local/bin/update-ubuntu
 ```
 
 Ensure that the script is in the bin directory:
