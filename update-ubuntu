@@ -2,7 +2,7 @@
 
 # Help function
 usage() {
-    echo "Usage: $0 [-d -c -r -v -h]" 1>&2
+    echo "Usage: $0 [-d -a -c -v -h]" 1>&2
     echo "[options] are:
         -d: run the dist-upgrade command.
         -a: run the autoremove command.
@@ -15,7 +15,7 @@ usage() {
 VERBOSE=""
 
 # Process options with getopts
-while getopts ":drcvh" opt; do
+while getopts ":dacvh" opt; do
     case ${opt} in
         d)
             DIST_UPGRADE=true
