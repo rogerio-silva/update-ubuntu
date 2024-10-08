@@ -22,7 +22,7 @@ while getopts ":adrcvh" opt; do
             DIST_UPGRADE=true
             AUTOREMOVE=true
             AUTOCLEAN=true
-            VERBOSE = true
+            VERBOSE=true
             ;;
         d)
             DIST_UPGRADE=true
