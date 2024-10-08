@@ -2,10 +2,11 @@
 
 # Help function
 usage() {
-    echo "Usage: $0 [-d -a -c -v -h]" 1>&2
+    echo "Usage: $0 [-a -d -r -c -v -h]" 1>&2
     echo "[options] are:
+        -a: run all commands.
         -d: run the dist-upgrade command.
-        -a: run the autoremove command.
+        -r: run the autoremove command.
         -c: run the autoclean command.
         -h: show this help message.
         -v: show the verbose version." 1>&2
@@ -15,8 +16,14 @@ usage() {
 VERBOSE=""
 
 # Process options with getopts
-while getopts ":dacvh" opt; do
+while getopts ":adrcvh" opt; do
     case ${opt} in
+        a)
+            DIST_UPGRADE=true
+            AUTOREMOVE=true
+            AUTOCLEAN=true
+            VERBOSE = true
+            ;;
         d)
             DIST_UPGRADE=true
             ;;
